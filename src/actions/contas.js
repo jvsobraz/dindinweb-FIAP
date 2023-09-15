@@ -2,8 +2,9 @@
 
 import { revalidatePath } from "next/cache"
 
+const url = process.env.NEXT_PUBLIC_BASE_URL + "/contas"
+
 export async function create(formData){
-    const url = "http://localhost:8080/api/contas"
 
     const options = {
         method: "POST",
@@ -27,3 +28,12 @@ export async function create(formData){
     return { ok: 'ok' }
 
 }
+
+export async function getContas() {
+    const resp = await fetch(url)
+    if (!resp.ok){
+        throw new Error("Erro ao obter dados das contas")
+    }
+
+    return resp.json()
+  }
