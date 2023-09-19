@@ -11,7 +11,7 @@ export default function Conta({conta}) {
             <div className="flex items-center">
                 <span>R$ 100.00</span>
                 <div className='invisible group-hover:visible'>
-                    <DropMenu />
+                    <DropMenu conta={conta} />
                 </div>
             </div>
         </div>

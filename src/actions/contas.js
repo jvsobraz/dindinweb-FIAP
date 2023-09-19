@@ -30,10 +30,62 @@ export async function create(formData){
 }
 
 export async function getContas() {
+    await new Promise(r => setInterval(r, 5000))
     const resp = await fetch(url)
     if (!resp.ok){
         throw new Error("Erro ao obter dados das contas")
     }
 
     return resp.json()
-  }
+}
+
+export async function destroy(id){
+    const deleteUrl = url + "/" + id
+
+    const options = {
+        method: "DELETE"
+    }
+
+    const resp = await fetch(deleteUrl, options)
+
+    if(resp.status !== 204) 
+        return {error: "Erro ao apagar conta. " + resp.status }
+
+    revalidatePath("/contas")
+
+}
+
+export async function getConta(id){
+    const getUrl = url + "/" + id
+
+    const resp = await fetch(getUrl)
+
+    if(resp.status !== 200) 
+        return {error: "Erro ao buscar dados da conta. " + resp.status }
+
+    return await resp.json()
+    
+}
+
+export async function update(conta){
+    const updateUrl = url + "/" + conta.id
+
+    const options = {
+        method: "PUT",
+        body: JSON.stringify(conta),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }   
+
+    const resp = await fetch(updateUrl, options)
+    
+    if (resp.status !== 200 ){
+        return {
+            error: `Erro ao atualizar. ${resp.status} `
+        }
+    }
+
+    revalidatePath("/contas")
+    
+}
